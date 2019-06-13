@@ -1,0 +1,276 @@
+# Copyright (C) 2018 CidCode
+msgid ""
+msgstr ""
+"Project-Id-Version: Email Customizer for WooCommerce with Drag Drop Builder - Woo Email Editor\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: CidCode\n"
+"Language-Team: CidCode\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:62
+#, php-format
+msgid ""
+"%sEmail Customizer with Drag Drop Builder needs WooCommerce%s %sWooCommerce"
+"%s must be active. Please install & activate WooCommerce."
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:77
+#, php-format
+msgid ""
+"%sEmail Customizer with Drag Drop Builder needs WooCommerce%s This version "
+"of Email Customizer requires WooCommerce %s or newer. For more information "
+"about our WooCommerce version support %sclick here%s."
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:107
+msgctxt "post type general name"
+msgid "Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:108
+msgctxt "post type singular name"
+msgid "Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:109
+msgctxt "Team item"
+msgid "Add New Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:110
+msgid "Add a new post of type Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:111
+msgid "Edit Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:112
+msgid "New Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:113
+msgid "View Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:114
+msgid "Search Email Template"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:115
+msgid "No Email Template found"
+msgstr ""
+
+#: email-customizer-for-woocommerce-with-drag-drop-builder.php:116
+msgid "No Email Template currently trashed"
+msgstr ""
+
+#: includes/email-core.class.php:184
+msgid "Payment page"
+msgstr ""
+
+#: includes/email-core.class.php:236
+msgid "Visit Website"
+msgstr ""
+
+#: includes/general-settings.class.php:43 pages/admin-page.php:267
+msgid "Email Customizer"
+msgstr ""
+
+#: pages/admin-page.php:39
+msgid "Language"
+msgstr ""
+
+#: pages/admin-page.php:62
+msgid "Email type"
+msgstr ""
+
+#: pages/admin-page.php:67
+msgid "Email to show"
+msgstr ""
+
+#: pages/admin-page.php:89
+msgid "Order"
+msgstr ""
+
+#: pages/admin-page.php:100
+msgid "Unfortunately,there is not any order to show"
+msgstr ""
+
+#: pages/admin-page.php:121
+#, php-format
+msgid "...Showing the most recent %u orders"
+msgstr ""
+
+#: pages/admin-page.php:153
+msgid "Export as JSON"
+msgstr ""
+
+#: pages/admin-page.php:161
+msgid "Export as HTML"
+msgstr ""
+
+#: pages/admin-page.php:190
+msgid "Save"
+msgstr ""
+
+#: pages/admin-page.php:217
+msgid "Save as Template"
+msgstr ""
+
+#: pages/admin-page.php:225
+msgid "Save as..."
+msgstr ""
+
+#: pages/admin-page.php:233
+msgid "Send Mail"
+msgstr ""
+
+#: pages/admin-page.php:281
+msgid "Elements"
+msgstr ""
+
+#: pages/admin-page.php:290
+msgid "Structure"
+msgstr ""
+
+#: pages/admin-page.php:299
+msgid "Settings"
+msgstr ""
+
+#: pages/admin-page.php:435
+msgid "Email Settings"
+msgstr ""
+
+#: pages/admin-page.php:444
+msgid "Background Color"
+msgstr ""
+
+#: pages/admin-page.php:453
+msgid "Content Color"
+msgstr ""
+
+#: pages/admin-page.php:462
+msgid "Email width"
+msgstr ""
+
+#: pages/admin-page.php:469
+msgid "Email width must be 480 - 900"
+msgstr ""
+
+#: pages/admin-page.php:481
+msgid "General Settings"
+msgstr ""
+
+#: pages/admin-page.php:491
+msgid "Panel position"
+msgstr ""
+
+#: pages/admin-page.php:501
+msgid "After selecting position will save automatically"
+msgstr ""
+
+#: pages/admin-page.php:507
+msgid "Table cell padding"
+msgstr ""
+
+#: pages/admin-page.php:515
+msgid "The table which shows the product list"
+msgstr ""
+
+#: pages/admin-page.php:521
+msgid "Show product image"
+msgstr ""
+
+#: pages/admin-page.php:531
+msgid "Product image width"
+msgstr ""
+
+#: pages/admin-page.php:541
+msgid "Product image height"
+msgstr ""
+
+#: pages/admin-page.php:563
+msgid "Content"
+msgstr ""
+
+#: pages/admin-page.php:571
+msgid "Style"
+msgstr ""
+
+#: pages/admin-page.php:1593
+msgid "Select an email type"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-items-1.php:35
+#: templates/ec-woo-mail-helper/order-items-2.php:35
+#: templates/ec-woo-mail-helper/order-items-3.php:35
+#: templates/ec-woo-mail-helper/order-items-4.php:35
+#: templates/ec-woo-mail-helper/order-items-5.php:39
+#: templates/ec-woo-mail-helper/order-items.php:35
+#, php-format
+msgid "Order #%s"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-items-1.php:47
+#: templates/ec-woo-mail-helper/order-items-2.php:47
+#: templates/ec-woo-mail-helper/order-items-3.php:47
+#: templates/ec-woo-mail-helper/order-items-4.php:47
+#: templates/ec-woo-mail-helper/order-items-5.php:62
+#: templates/ec-woo-mail-helper/order-items.php:48
+msgid "Product"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-items-1.php:48
+#: templates/ec-woo-mail-helper/order-items-2.php:48
+#: templates/ec-woo-mail-helper/order-items-3.php:48
+#: templates/ec-woo-mail-helper/order-items-4.php:48
+#: templates/ec-woo-mail-helper/order-items-5.php:63
+#: templates/ec-woo-mail-helper/order-items-rows-3.php:51
+#: templates/ec-woo-mail-helper/order-items-rows-4.php:50
+#: templates/ec-woo-mail-helper/order-items.php:49
+msgid "Quantity"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-items-1.php:49
+#: templates/ec-woo-mail-helper/order-items-2.php:49
+#: templates/ec-woo-mail-helper/order-items-3.php:49
+#: templates/ec-woo-mail-helper/order-items-4.php:49
+#: templates/ec-woo-mail-helper/order-items-5.php:64
+#: templates/ec-woo-mail-helper/order-items.php:50
+msgid "Price"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-items-rows-1.php:24
+#: templates/ec-woo-mail-helper/order-items-rows-2.php:24
+#: templates/ec-woo-mail-helper/order-items-rows-3.php:24
+#: templates/ec-woo-mail-helper/order-items-rows-4.php:23
+#: templates/ec-woo-mail-helper/order-items-rows-5.php:24
+#: templates/ec-woo-mail-helper/order-items-rows.php:18
+msgid "Product Image"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-totals.php:13
+msgid "Subtotal:"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-totals.php:20
+msgid "Discount:"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-totals.php:47
+msgid "Fee"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-totals.php:78
+msgid "Refund"
+msgstr ""
+
+#: templates/ec-woo-mail-helper/order-totals.php:85
+msgid "Total:"
+msgstr ""
