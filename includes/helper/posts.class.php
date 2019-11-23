@@ -91,7 +91,33 @@ class EC_Helper_Posts
     /*
     * get_custom_field_value_flexible_checkout_editor_woo
     */
+    public static function get_custom_field_value_FCFP($order_id, $key)
+    {
+        global $wpdb;
+        $query = "select meta_value from $wpdb->postmeta  where meta_key = '_".$key."' and post_id=".$order_id." limit 1";
+        $result = $wpdb->get_results($query);
+        if (sizeof($result)!=0) {
+          return $result[0]->meta_value;
+        }
+        return "";
+    }
+
+    /*
+    * get_custom_field_value_flexible_checkout_editor_woo
+    */
     public static function get_custom_field_value_flexible_checkout_editor_woo($order_id, $key)
+    {
+        global $wpdb;
+        $query = "select meta_value from $wpdb->postmeta  where meta_key = '".$key."' and post_id=".$order_id." limit 1";
+        $result = $wpdb->get_results($query);
+        if (sizeof($result)!=0) {
+          return $result[0]->meta_value;
+        }
+        return "";
+    }
+
+
+    public static function get_custom_field_value_thwcfd($order_id, $key)
     {
         global $wpdb;
         $query = "select meta_value from $wpdb->postmeta  where meta_key = '".$key."' and post_id=".$order_id." limit 1";

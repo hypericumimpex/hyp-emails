@@ -1,11 +1,11 @@
 <?php
 
-if ( !class_exists('Puc_v4p4_OAuthSignature', false) ):
+if ( !class_exists('WooMail_Puc_v4p4_OAuthSignature', false) ):
 
 	/**
 	 * A basic signature generator for zero-legged OAuth 1.0.
 	 */
-	class Puc_v4p4_OAuthSignature {
+	class WooMail_Puc_v4p4_OAuthSignature {
 		private $consumerKey = '';
 		private $consumerSecret = '';
 

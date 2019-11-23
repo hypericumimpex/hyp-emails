@@ -230,7 +230,7 @@
 
       /* Media Queries */
 
-      @media screen and (max-width: 600px) {
+      @media screen and (max-width: 768px) {
         .email-container {
           width: 100% !important;
           margin: auto !important;
@@ -243,12 +243,13 @@
           margin-right: auto !important;
         }
         /* What it does: Forces table cells into full-width rows. */
-        .stack-column,
+        .woomail-column,
+        .table-column-responsive,
         .stack-column-center {
           display: block !important;
           width: 100% !important;
           max-width: 100% !important;
-          direction: ltr !important;
+          /* direction: ltr !important; */
         }
         /* And center justify these ones. */
         .stack-column-center {
@@ -266,7 +267,7 @@
           display: inline-block !important;
         }
         /* What it does: Adjust typography on small screens to improve readability */
-        .email-container p {
+        .email-container * {
           font-size: 17px !important;
         }
         .main-row-table{
@@ -299,11 +300,11 @@
 
   <body
     width="100%"
-    style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: {{email_bg_color}};"
+    style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly;"
   >
-    <center style="width: 100%; background-color: {{email_bg_color}};">
+    <center style="width: 100%; ">
       <!--[if mso | IE]>
-    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: {{email_bg_color}};">
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="">
     <tr>
     <td>
     <![endif]-->

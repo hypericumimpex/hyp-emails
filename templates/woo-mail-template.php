@@ -34,6 +34,7 @@ if (isset($args['order']) && $args['order']->get_id()) {
 if (!empty( $args ) ) {
     $email_type=$args['email']->id;
 
+    $lang=strtolower(EC_Helper::get_order_language($order_id));
     $email_core = new EC_Email_Core();
     $email_core->is_preview(false);
     $email_core->set_order_id($order_id);

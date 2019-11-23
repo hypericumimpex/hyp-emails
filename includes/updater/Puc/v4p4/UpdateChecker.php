@@ -1,8 +1,8 @@
 <?php
 
-if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
+if ( !class_exists('WooMail_Puc_v4p4_UpdateChecker', false) ):
 
-	abstract class Puc_v4p4_UpdateChecker {
+	abstract class WooMail_Puc_v4p4_UpdateChecker {
 		protected $filterSuffix = '';
 		protected $updateTransient = '';
 		protected $translationType = ''; //"plugin" or "theme".
@@ -36,22 +36,22 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		public $slug = '';
 
 		/**
-		 * @var Puc_v4p4_InstalledPackage
+		 * @var WooMail_Puc_v4p4_InstalledPackage
 		 */
 		protected $package;
 
 		/**
-		 * @var Puc_v4p4_Scheduler
+		 * @var WooMail_Puc_v4p4_Scheduler
 		 */
 		public $scheduler;
 
 		/**
-		 * @var Puc_v4p4_UpgraderStatus
+		 * @var WooMail_Puc_v4p4_UpgraderStatus
 		 */
 		protected $upgraderStatus;
 
 		/**
-		 * @var Puc_v4p4_StateStore
+		 * @var WooMail_Puc_v4p4_StateStore
 		 */
 		protected $updateState;
 
@@ -79,8 +79,8 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 
 			$this->package = $this->createInstalledPackage();
 			$this->scheduler = $this->createScheduler($checkPeriod);
-			$this->upgraderStatus = new Puc_v4p4_UpgraderStatus();
-			$this->updateState = new Puc_v4p4_StateStore($this->optionName);
+			$this->upgraderStatus = new WooMail_Puc_v4p4_UpgraderStatus();
+			$this->updateState = new WooMail_Puc_v4p4_StateStore($this->optionName);
 
 			if ( did_action('init') ) {
 				$this->loadTextDomain();
@@ -201,12 +201,12 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		/**
 		 * Create a package instance that represents this plugin or theme.
 		 *
-		 * @return Puc_v4p4_InstalledPackage
+		 * @return WooMail_Puc_v4p4_InstalledPackage
 		 */
 		abstract protected function createInstalledPackage();
 
 		/**
-		 * @return Puc_v4p4_InstalledPackage
+		 * @return WooMail_Puc_v4p4_InstalledPackage
 		 */
 		public function getInstalledPackage() {
 			return $this->package;
@@ -219,14 +219,14 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		 * and substitute their own scheduler.
 		 *
 		 * @param int $checkPeriod
-		 * @return Puc_v4p4_Scheduler
+		 * @return WooMail_Puc_v4p4_Scheduler
 		 */
 		abstract protected function createScheduler($checkPeriod);
 
 		/**
 		 * Check for updates. The results are stored in the DB option specified in $optionName.
 		 *
-		 * @return Puc_v4p4_Update|null
+		 * @return WooMail_Puc_v4p4_Update|null
 		 */
 		public function checkForUpdates() {
 			$installedVersion = $this->getInstalledVersion();
@@ -260,7 +260,7 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		/**
 		 * Load the update checker state from the DB.
 		 *
-		 * @return Puc_v4p4_StateStore
+		 * @return WooMail_Puc_v4p4_StateStore
 		 */
 		public function getUpdateState() {
 			return $this->updateState->lazyLoad();
@@ -285,7 +285,7 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		 * Uses cached update data. To retrieve update information straight from
 		 * the metadata URL, call requestUpdate() instead.
 		 *
-		 * @return Puc_v4p4_Update|null
+		 * @return WooMail_Puc_v4p4_Update|null
 		 */
 		public function getUpdate() {
 			$update = $this->updateState->getUpdate();
@@ -306,16 +306,16 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		 *
 		 * Subclasses should run the update through filterUpdateResult before returning it.
 		 *
-		 * @return Puc_v4p4_Update An instance of Update, or NULL when no updates are available.
+		 * @return WooMail_Puc_v4p4_Update An instance of Update, or NULL when no updates are available.
 		 */
 		abstract public function requestUpdate();
 
 		/**
 		 * Filter the result of a requestUpdate() call.
 		 *
-		 * @param Puc_v4p4_Update|null $update
+		 * @param WooMail_Puc_v4p4_Update|null $update
 		 * @param array|WP_Error|null $httpResult The value returned by wp_remote_get(), if any.
-		 * @return Puc_v4p4_Update
+		 * @return WooMail_Puc_v4p4_Update
 		 */
 		protected function filterUpdateResult($update, $httpResult = null) {
 			//Let plugins/themes modify the update.
@@ -338,9 +338,9 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		 * "Compatibility: Unknown".
 		 * The function mimics how wordpress.org API crafts the "tested" field out of "Tested up to".
 		 *
-		 * @param Puc_v4p4_Update|null $update
+		 * @param WooMail_Puc_v4p4_Update|null $update
 		 */
-		protected function fixSupportedWordpressVersion(Puc_v4p4_Update $update = null) {
+		protected function fixSupportedWordpressVersion(WooMail_Puc_v4p4_Update $update = null) {
 			if ( !isset($update->tested) || !preg_match('/^\d++\.\d++$/', $update->tested) ) {
 				return;
 			}
@@ -570,7 +570,7 @@ if ( !class_exists('Puc_v4p4_UpdateChecker', false) ):
 		 * @param string $metaClass Parse the JSON as an instance of this class. It must have a static fromJson method.
 		 * @param string $filterRoot
 		 * @param array $queryArgs Additional query arguments.
-		 * @return array [Puc_v4p4_Metadata|null, array|WP_Error] A metadata instance and the value returned by wp_remote_get().
+		 * @return array [WooMail_Puc_v4p4_Metadata|null, array|WP_Error] A metadata instance and the value returned by wp_remote_get().
 		 */
 		protected function requestMetadata($metaClass, $filterRoot, $queryArgs = array()) {
 			//Query args to append to the URL. Plugins can add their own by using a filter callback (see addQueryArgFilter()).

@@ -231,3 +231,6 @@ padding-top: 23px;
   padding: 0 !important;
   outline: 0 !important;
 }
+.ec-panel-settings-textarea{
+  width: 100%;
+}

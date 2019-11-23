@@ -663,13 +663,16 @@ class EC_Helper_Ajax
         }
         $this->common_functions();
         $email_core=$_SESSION['email_core'];
-        //$email_core->is_preview(true);
-        $email_core->shortcode_init();
-        $shor=str_replace('\\', '', sanitize_text_field($posted_values['shortcode']));
-        $shortcode_result= do_shortcode($shor);
-        $result=array();
-        $result['data']=$shortcode_result;
-        echo $this->response->success($result);
+        if ($email_core!=null) {
+          //$email_core->is_preview(true);
+          $email_core->shortcode_init();
+          $shor=str_replace('\\', '', sanitize_text_field($posted_values['shortcode']));
+          $shortcode_result= do_shortcode($shor);
+          $result=array();
+          $result['data']=$shortcode_result;
+          echo $this->response->success($result);
+        }
+
         die();
     }
 

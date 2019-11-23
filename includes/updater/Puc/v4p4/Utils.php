@@ -1,8 +1,8 @@
 <?php
 
-if ( !class_exists('Puc_v4p4_Utils', false) ):
+if ( !class_exists('WooMail_Puc_v4p4_Utils', false) ):
 
-	class Puc_v4p4_Utils {
+	class WooMail_Puc_v4p4_Utils {
 		/**
 		 * Get a value from a nested array or object based on a path.
 		 *

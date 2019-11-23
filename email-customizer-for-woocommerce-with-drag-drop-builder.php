@@ -3,7 +3,7 @@
   Plugin Name:  HYP Emails
   Description:  Hyp Custom Emails.
   Plugin URI:   https://github.com/hypericumimpex/hyp-emails/
-  Version:      2.2.11
+  Version:      2.4
   Author:       Romeo C.
   Author URI:   https://github.com/hypericumimpex/
   Text Domain:  ec-for-woo-with-drag-drop-builder
@@ -19,7 +19,7 @@ if (!defined('EC_WOO_BUILDER_SLUG')) {
     define('EC_WOO_BUILDER_POST_TYPE', 'ec_woo_ddb_template');
     define('EC_WOO_BUILDER_POST_TYPE_CUSTOM_CODE', 'ecwoo_csc');
     define('EC_WOO_BUILDER_SHORTCODE_PRE', 'ec_woo_');
-    define('EC_WOO_BUILDER_VERSION', '2.2.11');
+    define('EC_WOO_BUILDER_VERSION', '2.4');
     define('EC_WOO_BUILDER_FILE', __FILE__);
     define('EC_WOO_BUILDER_PATH', plugin_dir_path(__FILE__));
     define('EC_WOO_BUILDER_URL', plugin_dir_url(__FILE__));
@@ -135,13 +135,12 @@ add_action('admin_head', 'remove_admin_notices');
 $purchase_code = get_option('ec_woo_purchase_code', '');
 if (isset($purchase_code) && $purchase_code != '') {
     require_once(EC_WOO_BUILDER_PATH . '/includes/updater/updater.php');
-    $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-        'https://emailcustomizer.com/api/update.php?key=' . $purchase_code . '&version=' . EC_WOO_BUILDER_VERSION,
+    $myUpdateChecker = WooMail_Puc_v4_Factory::buildUpdateChecker(
+        'https://emailcustomizer.com/api/update.php?key=' . $purchase_code . '&version=' . EC_WOO_BUILDER_VERSION.'&web_url='.get_home_url(),
         __FILE__,
         EC_WOO_BUILDER_SLUG
     );
 }
-
 
 $ec_woo_preview_mail = EC_WOO_Preview_Mail::get_instance();
 

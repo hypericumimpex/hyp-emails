@@ -6,7 +6,7 @@ $items = $order->get_items();
 $product_ids = [];
 foreach ($items as $item_id => $item) {
     $_product = $item->get_product();
-    $product_ids[] = $_product->get_id();
+    $product_ids[] = EC_Helper::get_product_id($_product);
 }
 $config = array(
     'columns' => get_option('ec_woo_related_items_columns', EC_WOO_BUILDER_RELATED_ITEMS_COLUMNS),

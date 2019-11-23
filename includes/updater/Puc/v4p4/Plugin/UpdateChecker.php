@@ -1,5 +1,5 @@
 <?php
-if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
+if ( !class_exists('WooMail_Puc_v4p4_Plugin_UpdateChecker', false) ):
 
 	/**
 	 * A custom plugin update checker.
@@ -8,7 +8,7 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 	 * @copyright 2018
 	 * @access public
 	 */
-	class Puc_v4p4_Plugin_UpdateChecker extends Puc_v4p4_UpdateChecker {
+	class WooMail_Puc_v4p4_Plugin_UpdateChecker extends WooMail_Puc_v4p4_UpdateChecker {
 		protected $updateTransient = 'update_plugins';
 		protected $translationType = 'plugin';
 
@@ -17,7 +17,7 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 		public $muPluginFile = ''; //For MU plugins, the plugin filename relative to the mu-plugins directory.
 
 		/**
-		 * @var Puc_v4p4_Plugin_Package
+		 * @var WooMail_Puc_v4p4_Plugin_Package
 		 */
 		protected $package;
 
@@ -68,17 +68,17 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 
 			parent::__construct($metadataUrl, dirname($this->pluginFile), $slug, $checkPeriod, $optionName);
 
-			$this->extraUi = new Puc_v4p4_Plugin_Ui($this);
+			$this->extraUi = new WooMail_Puc_v4p4_Plugin_Ui($this);
 		}
 
 		/**
 		 * Create an instance of the scheduler.
 		 *
 		 * @param int $checkPeriod
-		 * @return Puc_v4p4_Scheduler
+		 * @return WooMail_Puc_v4p4_Scheduler
 		 */
 		protected function createScheduler($checkPeriod) {
-			$scheduler = new Puc_v4p4_Scheduler($this, $checkPeriod, array('load-plugins.php'));
+			$scheduler = new WooMail_Puc_v4p4_Scheduler($this, $checkPeriod, array('load-plugins.php'));
 			register_deactivation_hook($this->pluginFile, array($scheduler, 'removeUpdaterCron'));
 			return $scheduler;
 		}
@@ -124,13 +124,13 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 		 * @uses wp_remote_get()
 		 *
 		 * @param array $queryArgs Additional query arguments to append to the request. Optional.
-		 * @return Puc_v4p4_Plugin_Info
+		 * @return WooMail_Puc_v4p4_Plugin_Info
 		 */
 		public function requestInfo($queryArgs = array()) {
-			list($pluginInfo, $result) = $this->requestMetadata('Puc_v4p4_Plugin_Info', 'request_info', $queryArgs);
+			list($pluginInfo, $result) = $this->requestMetadata('WooMail_Puc_v4p4_Plugin_Info', 'request_info', $queryArgs);
 
 			if ( $pluginInfo !== null ) {
-				/** @var Puc_v4p4_Plugin_Info $pluginInfo */
+				/** @var WooMail_Puc_v4p4_Plugin_Info $pluginInfo */
 				$pluginInfo->filename = $this->pluginFile;
 				$pluginInfo->slug = $this->slug;
 			}
@@ -144,7 +144,7 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 		 *
 		 * @uses PluginUpdateChecker::requestInfo()
 		 *
-		 * @return Puc_v4p4_Update|null An instance of Plugin_Update, or NULL when no updates are available.
+		 * @return WooMail_Puc_v4p4_Update|null An instance of Plugin_Update, or NULL when no updates are available.
 		 */
 		public function requestUpdate() {
 			//For the sake of simplicity, this function just calls requestInfo()
@@ -153,7 +153,7 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 			if ( $pluginInfo === null ){
 				return null;
 			}
-			$update = Puc_v4p4_Plugin_Update::fromPluginInfo($pluginInfo);
+			$update = WooMail_Puc_v4p4_Plugin_Update::fromPluginInfo($pluginInfo);
 
 			$update = $this->filterUpdateResult($update);
 
@@ -263,12 +263,12 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 		 * Uses cached update data. To retrieve update information straight from
 		 * the metadata URL, call requestUpdate() instead.
 		 *
-		 * @return Puc_v4p4_Plugin_Update|null
+		 * @return WooMail_Puc_v4p4_Plugin_Update|null
 		 */
 		public function getUpdate() {
 			$update = parent::getUpdate();
 			if ( isset($update) ) {
-				/** @var Puc_v4p4_Plugin_Update $update */
+				/** @var WooMail_Puc_v4p4_Plugin_Update $update */
 				$update->filename = $this->pluginFile;
 			}
 			return $update;
@@ -379,14 +379,14 @@ if ( !class_exists('Puc_v4p4_Plugin_UpdateChecker', false) ):
 		/**
 		 * Create a package instance that represents this plugin or theme.
 		 *
-		 * @return Puc_v4p4_InstalledPackage
+		 * @return WooMail_Puc_v4p4_InstalledPackage
 		 */
 		protected function createInstalledPackage() {
-			return new Puc_v4p4_Plugin_Package($this->pluginAbsolutePath, $this);
+			return new WooMail_Puc_v4p4_Plugin_Package($this->pluginAbsolutePath, $this);
 		}
 
 		/**
-		 * @return Puc_v4p4_Plugin_Package
+		 * @return WooMail_Puc_v4p4_Plugin_Package
 		 */
 		public function getInstalledPackage() {
 			return $this->package;

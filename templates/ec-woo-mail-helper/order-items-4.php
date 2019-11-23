@@ -81,7 +81,7 @@ if ($ec_woo_settings_show_meta) {
                 <tr>
                     <?php if ($ec_woo_settings_rtl == '1'): ?>
                         <td class="col-total-label" scope="row" width="65%" colspan="2"
-                            style="text-align: left;    color: #606060;  font-size: 13px;font-family: sans-serif;  font-weight: normal;  padding-top: 5px;  padding-bottom: 5px;  padding-left: 20px;letter-spacing: 0.5px;  <?php echo $index == 1 ? 'padding-top:20px;' : '';
+                            style="text-align: right;    color: #606060;  font-size: 13px;font-family: sans-serif;  font-weight: normal;  padding-top: 5px;  padding-bottom: 5px;  padding-right: 20px;letter-spacing: 0.5px;  <?php echo $index == 1 ? 'padding-top:20px;' : '';
                             echo $index == sizeof($total_values) ? 'font-weight: bold;padding-bottom:20px;' : 'font-weight: 300;'; ?>">
                             <?php echo $item['label']; ?>
                         </td>

@@ -2,7 +2,7 @@
 
 #
 #
-# Parsedown
+# WooMail_Parsedown
 # http://parsedown.org
 #
 # (c) Emanuil Rusev
@@ -13,7 +13,7 @@
 #
 #
 
-class Parsedown
+class WooMail_Parsedown
 {
     # ~
 

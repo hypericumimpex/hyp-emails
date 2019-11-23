@@ -1,11 +1,11 @@
 <?php
-if ( !class_exists('Puc_v4p4_Scheduler', false) ):
+if ( !class_exists('WooMail_Puc_v4p4_Scheduler', false) ):
 
 	/**
 	 * The scheduler decides when and how often to check for updates.
-	 * It calls @see Puc_v4p4_UpdateChecker::checkForUpdates() to perform the actual checks.
+	 * It calls @see WooMail_Puc_v4p4_UpdateChecker::checkForUpdates() to perform the actual checks.
 	 */
-	class Puc_v4p4_Scheduler {
+	class WooMail_Puc_v4p4_Scheduler {
 		public $checkPeriod = 12; //How often to check for updates (in hours).
 		public $throttleRedundantChecks = false; //Check less often if we already know that an update is available.
 		public $throttledCheckPeriod = 72;
@@ -13,7 +13,7 @@ if ( !class_exists('Puc_v4p4_Scheduler', false) ):
 		protected $hourlyCheckHooks = array('load-update.php');
 
 		/**
-		 * @var Puc_v4p4_UpdateChecker
+		 * @var WooMail_Puc_v4p4_UpdateChecker
 		 */
 		protected $updateChecker;
 
@@ -22,7 +22,7 @@ if ( !class_exists('Puc_v4p4_Scheduler', false) ):
 		/**
 		 * Scheduler constructor.
 		 *
-		 * @param Puc_v4p4_UpdateChecker $updateChecker
+		 * @param WooMail_Puc_v4p4_UpdateChecker $updateChecker
 		 * @param int $checkPeriod How often to check for updates (in hours).
 		 * @param array $hourlyHooks
 		 */

@@ -75,8 +75,8 @@ if ('excl' === $tax_display) {
 if ($refunds = $order->get_refunds()) {
     foreach ($refunds as $id => $refund) {
         $total_rows['refund_' . $id] = array(
-            'label' => $refund->get_refund_reason() ? $refund->get_refund_reason() : __('Refund', 'woocommerce') . ':',
-            'value' => wc_price('-' . $refund->get_refund_amount(), array('currency' => $order->get_currency()))
+            'label' => $refund->get_reason() ? $refund->get_reason() : __('Refund', 'woocommerce') . ':',
+            'value' => wc_price('-' . $refund->get_amount(), array('currency' => $order->get_currency()))
         );
     }
 }

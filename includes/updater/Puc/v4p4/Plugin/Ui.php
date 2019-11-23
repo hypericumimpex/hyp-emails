@@ -1,14 +1,14 @@
 <?php
-if ( !class_exists('Puc_v4p4_Plugin_Ui', false) ):
+if ( !class_exists('WooMail_Puc_v4p4_Plugin_Ui', false) ):
 	/**
 	 * Additional UI elements for plugins.
 	 */
-	class Puc_v4p4_Plugin_Ui {
+	class WooMail_Puc_v4p4_Plugin_Ui {
 		private $updateChecker;
 		private $manualCheckErrorTransient = '';
 
 		/**
-		 * @param Puc_v4p4_Plugin_UpdateChecker $updateChecker
+		 * @param WooMail_Puc_v4p4_Plugin_UpdateChecker $updateChecker
 		 */
 		public function __construct($updateChecker) {
 			$this->updateChecker = $updateChecker;

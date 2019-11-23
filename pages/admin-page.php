@@ -19,10 +19,12 @@ $order_collection = new WP_Query(array(
 ));
 
 $order_collection = $order_collection->posts;
-
-$purchase_code_param = sanitize_text_field($_GET['purchase_code']);
-if (!is_null($purchase_code_param) && !empty($purchase_code_param) && isset($purchase_code_param)) {
-  EC_Helper_Posts::save_settings_option('ec_woo_purchase_code', $purchase_code_param);
+if (isset($_GET['purchase_code'])) {
+  $purchase_code_param = sanitize_text_field($_GET['purchase_code']);
+  if (!is_null($purchase_code_param) && !empty($purchase_code_param) && isset($purchase_code_param)) {
+    EC_Helper_Posts::save_settings_option('ec_woo_purchase_code', $purchase_code_param);
+    //TODO: add other variables which are needed for checking purchase code . take from ajax.php file
+  }
 }
 
 //remove all files from exports folder
@@ -46,7 +48,7 @@ $ec_woo_settings_show_meta = get_option('ec_woo_settings_show_meta', EC_WOO_BUIL
 
 
 $purchase_code = get_option('ec_woo_purchase_code', '');
-$is_activated = (isset($purchase_code) || $purchase_code != '');
+$is_activated = (isset($purchase_code) && $purchase_code != '');
 
 
 ?>
@@ -1020,7 +1022,7 @@ $is_activated = (isset($purchase_code) || $purchase_code != '');
                                             <div class="ec-panel-settings-label">
                                                 Text
                                             </div>
-                                            <textarea id="settings-button-text"></textarea>
+                                            <textarea id="settings-button-text" class="ec-panel-settings-textarea"></textarea>
                                         </div>
                                         <div class="ec-panel-settings-row">
                                             <div class="ec-panel-settings-label">

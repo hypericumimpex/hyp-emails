@@ -16,11 +16,20 @@ class EC_Email_Core
     private $post_helper;
     private $order;
     private $is_preview;
+    private $wpDateFormat;
+    private $wpTimeFormat;
+    private $wpDateTimeFormat;
 
     public function __construct()
     {
       $this->post_helper = new EC_Helper_Posts();
       $this->is_preview=false;
+
+      $this->wpDateFormat=get_option('date_format','M d, Y');
+      $this->wpTimeFormat=get_option('time_format','H:i:s');
+      $this->wpDateTimeFormat=$this->wpDateFormat.' '.$this->wpTimeFormat;
+
+      $this->full_shortcode_data=array();
     }
 
     public function get_order_id()
@@ -73,7 +82,7 @@ class EC_Email_Core
         add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'current_year', array($this, 'shortcode_generate'));
         add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'copyright', array($this, 'shortcode_generate'));
         add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'current_date', array($this, 'shortcode_generate'));
-
+        //add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'current_date_timezone', array($this, 'shortcode_generate'));
         /*
         * Order Shortcodes
         */
@@ -155,7 +164,11 @@ class EC_Email_Core
         add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'shipping_country', array($this, 'shortcode_generate'));
 
         add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'related_items', array($this, 'shortcode_generate'));
+        add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'custom_code', array($this, 'get_custom_code'));
 
+        if (EC_Helper::check_woo_customer_manager()) {
+          add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'customer_number', array($this, 'shortcode_generate'));
+        }
 
         $subs_data = new WooSubsLoader($this->order_id);
         if ($subs_data->hasData()) {
@@ -221,7 +234,7 @@ class EC_Email_Core
         }
 
 
-        $delivery_date = EC_Helper::get_order_delivery_date($this->get_order_number());
+        $delivery_date = EC_Helper::get_order_delivery_date($this->order_id);
         if ($delivery_date != false) {
             add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . 'order_delivery_date', array($this, 'shortcode_generate'));
         }
@@ -234,7 +247,7 @@ class EC_Email_Core
             }
         }
 
-        $custom_fields_flexible_checkout = EC_Helper::getCustomFieldsOf_FCFP();
+        $custom_fields_flexible_checkout = EC_Helper::getCustomFieldsOf_FCFP($this->order_id);
         if (!empty($custom_fields_flexible_checkout) && count($custom_fields_flexible_checkout) > 0) {
             foreach ($custom_fields_flexible_checkout as $key => $custom_fields_flexible_checkout_field) {
                 add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . $key, array($this, 'shortcode_generate'));
@@ -255,6 +268,13 @@ class EC_Email_Core
                 add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . $key, array($this, 'shortcode_generate'));
             }
         }
+
+        $custom_fields_thwcfd = EC_Helper::get_custom_fields_thwcfd($this->order_id);
+        if (!empty($custom_fields_thwcfd) && count($custom_fields_thwcfd) > 0) {
+            foreach ($custom_fields_thwcfd as $key => $value) {
+                add_shortcode(EC_WOO_BUILDER_SHORTCODE_PRE . $key, array($this, 'shortcode_generate'));
+            }
+        }
     }
 
     public function get_shortcode_data()
@@ -267,6 +287,19 @@ class EC_Email_Core
         return $this->full_shortcode_data;
     }
 
+    private function getDatetimeUTC($value)
+    {
+      $timezone=get_option('timezone_string','empty');
+      $gmt_offset=get_option('gmt_offset','empty');
+      if ($timezone!='empty') {
+        $date = new DateTime($value, new DateTimeZone('UTC'));
+        $date->setTimezone(new DateTimeZone($timezone));
+        return $date->format($this->wpDateTimeFormat);
+      }else if ($gmt_offset!='empty') {
+        $date=strtotime($value)+($gmt_offset.'hours');
+        return date($this->wpDateTimeFormat,$date);
+      }
+    }
     public function collect_data($args = array())
     {
         $_temp_data = array();
@@ -278,7 +311,8 @@ class EC_Email_Core
         }
 
         $_temp_data['General']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'site_name]'] = get_bloginfo('name');
-        $_temp_data['General']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'current_date]'] = date("Y-m-d H:i:s");
+        $_temp_data['General']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'current_date]'] = date($this->wpDateTimeFormat);
+      //  $_temp_data['General']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'current_date_timezone]'] = $this->getDatetimeUTC(date($this->wpDateTimeFormat));
         $_temp_data['General']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'site_url]'] = '<a href="' . site_url() . '"> ' . esc_html__('Visit Website', EC_WOO_BUILDER_TEXTDOMAIN) . ' </a>';
         $_temp_data['General']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'current_year]'] = date("Y");
         $_temp_data['General']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'copyright]'] = "Copyright © " . date("Y");
@@ -327,13 +361,14 @@ class EC_Email_Core
         //  $order = wc_get_order($this->order_id);
         //}
         if ($this->order_id && class_exists('WC_Order')) {
-            $order = new WC_Order($this->order_id);
+            $this->order = new WC_Order($this->order_id);
         }
 
 
-        if (is_null($order)) {
+        if (is_null($this->order)) {
             return;
         }
+        $order=$this->order;
 
         $custom_fields_fcew = EC_Helper::get_custom_fields_flexible_checkout_editor_woo($this->order_id);
         if (!empty($custom_fields_fcew) && count($custom_fields_fcew) > 0) {
@@ -342,7 +377,14 @@ class EC_Email_Core
             }
         }
 
-        $custom_fields_flexible_checkout = EC_Helper::getCustomFieldsOf_FCFP();
+        $custom_fields__thwcfd = EC_Helper::get_custom_fields_thwcfd($this->order_id);
+        if (!empty($custom_fields__thwcfd) && count($custom_fields__thwcfd) > 0) {
+            foreach ($custom_fields__thwcfd as $key => $value) {
+                $_temp_data['Checkout Field Editor (Checkout Manager) for WooCommerce']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . $key . ']'] = $value;
+            }
+        }
+
+        $custom_fields_flexible_checkout = EC_Helper::getCustomFieldsOf_FCFP($this->order_id);
         if (!empty($custom_fields_flexible_checkout) && count($custom_fields_flexible_checkout) > 0) {
             foreach ($custom_fields_flexible_checkout as $key => $custom_fields_flexible_checkout_field) {
                 $_temp_data['Flexible Checkout Fields']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . $key . ']'] = wpdesk_get_order_meta($order, $key, true);
@@ -413,14 +455,14 @@ class EC_Email_Core
         $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_payment_url]'] = '<a href="' . esc_url($order->get_checkout_payment_url()) . '">' . esc_html__('Payment page', EC_WOO_BUILDER_TEXTDOMAIN) . '</a>';
 
         //Order Info
-
         $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_id]'] = $this->get_order_number();
-        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_link]'] = '<a href="' . $order->get_view_order_url() . '">[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_id]</a>';
-        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_link]'] = str_replace('[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_id]', $this->get_order_number(), $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_link]']);
+        $admin_order_link=admin_url('post.php?post=' . $this->get_order_number() . '&action=edit');
+        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_link]'] = '<a href="'.$admin_order_link.'">'.$this->get_order_number() . '</a>';
+        //$_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_link]'] = str_replace('[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_id]', $this->get_order_number(), $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_link]']);
         $order_date = strtotime($order->get_date_created());
-        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_date]'] = date('M d, Y', $order_date);
-        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_time]'] = date('H:i:s', $order_date);
-        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_datetime]'] = $order->get_date_created();
+        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_date]'] = date($this->wpDateFormat, $order_date);
+        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_time]'] = date($this->wpTimeFormat, $order_date);
+        $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'order_datetime]'] = date($this->wpDateTimeFormat, $order_date);
         $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'payment_method]'] = $this->get_order_payment_method_title();
 
         $_temp_data['Order']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'view_order_url]'] = '<a href="' . $order->get_view_order_url() . '" >' . $order->get_view_order_url() . '</a>';
@@ -489,6 +531,11 @@ class EC_Email_Core
         $_temp_data['Shipping']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'shipping_method]'] = $order->get_shipping_method();
 
 
+        if (EC_Helper::check_woo_customer_manager()) {
+          if ($customer = wpo_wccm_get_customer_by_order( $order ) ) {
+              $_temp_data['Customer Manager']['[' . EC_WOO_BUILDER_SHORTCODE_PRE . 'customer_number]'] = $customer->get_formatted_number();
+          }
+        }
         //WooCommerce Subscription info
         $subs_data = new WooSubsLoader($this->order_id);
         if ($subs_data->hasData()) {
@@ -580,6 +627,25 @@ class EC_Email_Core
             }
         }
         $this->shortcode_data = $converted;
+    }
+
+    /**
+     * To load Custom code
+     * */
+    public function get_custom_code($attr, $content, $tag){
+        ob_start();
+        $template = $this->get_template_override('ec-woo-mail-helper/custom-code.php');
+        $path = EC_WOO_BUILDER_PATH . '/templates/ec-woo-mail-helper/custom-code.php';
+        if($template){
+            $path = $template;
+        }
+        $order = $this->order;
+        $email_id = $this->email_type;
+        include($path);
+        $html = ob_get_contents();
+        ob_end_clean();
+
+        return $html;
     }
 
     public function get_order_total($order)
@@ -878,5 +944,16 @@ class EC_Email_Core
     public function get_shipping_country()
     {
         return method_exists($this->order, 'get_shipping_country') ? $this->order->get_shipping_country() : $this->order->shipping_country;
+    }
+
+    public function get_template_override($template){
+        $template = locate_template(
+            array(
+                trailingslashit( dirname(EC_WOO_BUILDER_PLUGIN_SLUG) ) . $template,
+                $template,
+            )
+        );
+
+        return $template;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-if ( !class_exists('Puc_v4p4_Factory', false) ):
+if ( !class_exists('WooMail_Puc_v4p4_Factory', false) ):
 
 	/**
 	 * A factory that builds update checker instances.
@@ -11,7 +11,7 @@ if ( !class_exists('Puc_v4p4_Factory', false) ):
 	 * At the moment it can only build instances of the UpdateChecker class. Other classes are
 	 * intended mainly for internal use and refer directly to specific implementations.
 	 */
-	class Puc_v4p4_Factory {
+	class WooMail_Puc_v4p4_Factory {
 		protected static $classVersions = array();
 		protected static $sorted = false;
 
@@ -24,7 +24,7 @@ if ( !class_exists('Puc_v4p4_Factory', false) ):
 		 * This method automatically detects if you're using it for a plugin or a theme and chooses
 		 * the appropriate implementation for your update source (JSON file, GitHub, BitBucket, etc).
 		 *
-		 * @see Puc_v4p4_UpdateChecker::__construct
+		 * @see WooMail_Puc_v4p4_UpdateChecker::__construct
 		 *
 		 * @param string $metadataUrl The URL of the metadata file, a GitHub repository, or another supported update source.
 		 * @param string $fullPath Full path to the main plugin file or to the theme directory.
@@ -32,7 +32,7 @@ if ( !class_exists('Puc_v4p4_Factory', false) ):
 		 * @param int $checkPeriod How often to check for updates (in hours).
 		 * @param string $optionName Where to store book-keeping info about update checks.
 		 * @param string $muPluginFile The plugin filename relative to the mu-plugins directory.
-		 * @return Puc_v4p4_Plugin_UpdateChecker|Puc_v4p4_Theme_UpdateChecker|Puc_v4p4_Vcs_BaseChecker
+		 * @return WooMail_Puc_v4p4_Plugin_UpdateChecker|Puc_v4p4_Theme_UpdateChecker|Puc_v4p4_Vcs_BaseChecker
 		 */
 		public static function buildUpdateChecker($metadataUrl, $fullPath, $slug = '', $checkPeriod = 12, $optionName = '', $muPluginFile = '') {
 			$fullPath = self::normalizePath($fullPath);
@@ -214,6 +214,8 @@ if ( !class_exists('Puc_v4p4_Factory', false) ):
 		 * @return string|null Full class name.
 		 */
 		protected static function getCompatibleClassVersion($class) {
+
+
 			if ( isset(self::$classVersions[$class][self::$latestCompatibleVersion]) ) {
 				return self::$classVersions[$class][self::$latestCompatibleVersion];
 			}
@@ -269,17 +271,18 @@ if ( !class_exists('Puc_v4p4_Factory', false) ):
 			}
 
 			//Store the greatest version number that matches our major version.
-			$components = explode('.', $version);
-			if ( $components[0] === self::$myMajorVersion ) {
-
-				if (
-					empty(self::$latestCompatibleVersion)
-					|| version_compare($version, self::$latestCompatibleVersion, '>')
-				) {
-					self::$latestCompatibleVersion = $version;
-				}
-
-			}
+			// $components = explode('.', $version);
+			// if ( $components[0] === self::$myMajorVersion ) {
+			//
+			// 	if (
+			// 		empty(self::$latestCompatibleVersion)
+			// 		|| version_compare($version, self::$latestCompatibleVersion, '>')
+			// 	) {
+			// 		self::$latestCompatibleVersion = $version;
+			// 	}
+			//
+			// }
+	    self::$latestCompatibleVersion = $version;
 
 			if ( !isset(self::$classVersions[$generalClass]) ) {
 				self::$classVersions[$generalClass] = array();

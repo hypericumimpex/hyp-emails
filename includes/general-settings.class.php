@@ -25,9 +25,9 @@ class EC_General_Settings
     public function plugins_Links($links, $file)
     {
         $base = EC_WOO_BUILDER_PLUGIN_SLUG;
-        if ($file == $base) {
-            $links[] = '<a href="https://codecanyon.net/user/cidcode/portfolio?ref=cidcode" target="_blank">More plugins by CidCode</a>';
-        }
+        // if ($file == $base) {
+        //     $links[] = '<a href="https://codecanyon.net/user/cidcode/portfolio?ref=cidcode" target="_blank">More plugins by CidCode</a>';
+        // }
         return $links;
     }
 
@@ -123,8 +123,8 @@ class EC_General_Settings
 
         // wp_register_script('ec-builder-js-jquery', EC_WOO_BUILDER_URL . 'assets/vendor/jquery/dist/jquery.min.js', array(), $version);
         // wp_enqueue_script('ec-builder-js-jquery');
-        wp_register_script('ec-helper', EC_WOO_BUILDER_URL . 'assets/js/helper.min.js', array('jquery'), $version);
-        wp_enqueue_script('ec-helper');
+        // wp_register_script('ec-helper', EC_WOO_BUILDER_URL . 'assets/js/helper.min.js', array('jquery'), $version);
+        // wp_enqueue_script('ec-helper');
 
         // wp_register_script('ec-builder-js-jquery-ui', EC_WOO_BUILDER_URL . 'assets/vendor/jquery-ui/jquery-ui.min.js', array('jquery'), $version);
         // wp_enqueue_script('ec-builder-js-jquery-ui');
@@ -159,8 +159,8 @@ class EC_General_Settings
         wp_enqueue_script('ec-builder-js-builder');
 
 
-        wp_register_script('ec-admin-page', EC_WOO_BUILDER_URL . 'assets/js/admin-page.min.js', array('jquery'), $version);
-        wp_enqueue_script('ec-admin-page');
+        // wp_register_script('ec-admin-page', EC_WOO_BUILDER_URL . 'assets/js/admin-page.min.js', array('jquery'), $version);
+        // wp_enqueue_script('ec-admin-page');
 
         if (is_rtl()) {
             wp_register_style('ec-builder-css-rtl', EC_WOO_BUILDER_URL . 'assets/css/builder-rtl.css', array(), $version);

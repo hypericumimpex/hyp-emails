@@ -98,34 +98,31 @@ class EC_Helper
     }
 
 
-    //get flexible Checkou tFields Plugin
-    public static function getCustomFieldsOf_FCFP()
+    /*
+    * Name : Flexible Checkout Fields for WooCommerce
+    * URL : https://wordpress.org/plugins/flexible-checkout-fields/
+    */
+    public static function getCustomFieldsOf_FCFP($order_id)
     {
         $fields = array();
-        global $flexible_checkout_fields;
         if (self::checkFCFPlugin()) {
-            $fields = array();
+            $_custom_field_arr=[];
+            $field_names=get_option("inspire_checkout_fields_settings", '');
 
-            if (method_exists($flexible_checkout_fields, 'get_settings')) {
-                $field_settings = $flexible_checkout_fields->get_settings();
-                $custom_fields['billing'] = (isset($field_settings['billing']))? $field_settings['billing']: array();
-                $custom_fields['shipping'] = (isset($field_settings['shipping']))? $field_settings['shipping']: array();
-                $custom_fields['order'] = (isset($field_settings['order']))? $field_settings['order']: array();
-                foreach ($custom_fields as $custom_field) {
-                    if (!empty($custom_field)) {
-                        foreach ($custom_field as $field_data) {
-                            if (isset($field_data['custom_field']) && $field_data['custom_field'] == 1) {
-                                if (isset($field_data['name']) && $field_data['name']) {
-                                    $fields['_'.$field_data['name']] = $field_data['label'];
-                                }
-                            }
-                        }
-                    }
+            foreach ($field_names as  $field_name=>$field_value) {
+                foreach ($field_value as $key => $value) {
+                  if ($value['custom_field']=="1") {
+                      $_custom_field_arr[$key]='';
+                  }
                 }
+
             }
+            foreach ($_custom_field_arr as $key => $value) {
+                $fields['_'.$key]=EC_Helper_Posts::get_custom_field_value_FCFP($order_id, $key);
+            }
+            return $fields;
         }
 
-        return $fields;
     }
 
     //exist Flexible Checkou tFields Plugin
@@ -190,10 +187,23 @@ class EC_Helper
     {
         return method_exists($order, 'get_date_created') ? $order->get_date_created() : $order->order_date;
     }
+    public static function get_product_id($product)
+    {
+        if (method_exists($product, 'get_id')) {
+          return $product->get_id();
+        }
+        if (method_exists($product, 'get_product_id')) {
+          return $product->get_product_id();
+        }
+        return $product->ID;
+    }
     public static function generate_shortcode_json($arr)
     {
         $groups=array();
         $tags=array();
+        if (sizeof($arr)==0) {
+          return '';
+        }
         foreach ($arr as $group_name=>$group_items) {
             $groups[]=$group_name;
             foreach ($group_items as $key => $value) {
@@ -299,6 +309,68 @@ class EC_Helper
           }
       }
       return $order;
+    }
+    /*
+    * WooCommerce Customer Manager
+    */
+    public static function check_woo_customer_manager()
+    {
+      return function_exists('wpo_wccm_get_customer_by_order');
+    }
+    public static function get_order_language($order_id)
+    {
+      $lang = '';
+      //to get language from WPML language
+      $wpml_lang = get_post_meta($order_id, 'wpml_language', true );
+
+      if($wpml_lang !== false && $wpml_lang != ''){
+          if(function_exists('icl_get_languages')){
+            $languages = icl_get_languages();
+            if(isset($languages[$wpml_lang])){
+                if(isset($languages[$wpml_lang]['default_locale'])){
+                    $lang = $languages[$wpml_lang]['default_locale'];
+                }
+            }
+          }
+      }
+
+      if (strlen($lang)==0) {
+        $lang=EC_Helper::get_locale();
+      }
+      return $lang;
+    }
+    /**
+    * Checkout Field Editor (Checkout Manager) for WooCommerce
+    */
+    public static function get_custom_fields_thwcfd($order_id)
+    {
+        if (self::check_thwcfd()) {
+            $fields=array("wc_fields_billing","wc_fields_shipping","wc_fields_additional");
+            $_custom_field_arr=[];
+            foreach ($fields as $custom_field) {
+                $field_names=get_option($custom_field, '');
+                foreach ($field_names as  $field_name=>$value) {
+
+                    if ($value['custom']=="1") {
+                        $_custom_field_arr[$field_name]='';
+                    }
+                }
+            }
+            foreach ($_custom_field_arr as $key => $value) {
+                $_custom_field_arr[$key]=EC_Helper_Posts::get_custom_field_value_thwcfd($order_id, $key);
+            }
+            return $_custom_field_arr;
+        }
+    }
+    /**
+    * Checkout Field Editor (Checkout Manager) for WooCommerce
+    */
+    public static function check_thwcfd()
+    {
+        if (class_exists('THWCFD')) {
+            return true;
+        }
+        return false;
     }
 
 }
